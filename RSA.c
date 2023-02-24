@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
-#include <math.h>
 
 int secret1(int x, int y);
 int secret2(int n);
@@ -91,7 +89,7 @@ int secret5(int a, int m)
 // Function to encrypt a message using RSA
 int encrypt(int msg, int e, int n)
 {
-    int cipher = (long long int) secret6(msg, e, n);
+    int cipher = secret6(msg, e, n);
 
     return cipher;
 }
@@ -99,7 +97,7 @@ int encrypt(int msg, int e, int n)
 // Function to decrypt a message using RSA
 int decrypt(int cipher, int d, int n)
 {
-    int msg = (long long int) secret6(cipher, d, n);
+    int msg = secret6(cipher, d, n);
 
     return msg;
 }
@@ -114,19 +112,23 @@ int secret6(int a, int b, int n){
     }
 
     return res;
-
 }
 
 int main()
 {
     srand(time(NULL));
 
-    int p, q, n, phi, e, d, msg, cipher, decrypted;
+    int p, q, n, phi, e, d, cipher, decrypted;
 
+    // Read the message to be encrypted
+    unsigned char msg = rand();
     
     // Generate two random prime numbers
-    p = secret3(3, 100);
-    q = secret3(3, 100);
+
+    do{
+    p = secret3(17, 100);
+    q = secret3(17, 100);
+    }while(p == q);
 
     // Calculate n and phi(n)
     n = p * q;
@@ -147,8 +149,6 @@ int main()
     printf("e = %d\n", e);
     printf("d = %d\n", d);
 
-    // Read the message to be encrypted
-    msg = 10;
 
     printf("msg : %d\n", msg);
 
@@ -158,8 +158,10 @@ int main()
     // Print
     printf("cipher : %d\n", cipher);
 
+    // Decrypt the message
     decrypted = decrypt(cipher, d, n);
 
+    // Print
     printf("decrypted : %d\n", decrypted);
 
     return 0;
